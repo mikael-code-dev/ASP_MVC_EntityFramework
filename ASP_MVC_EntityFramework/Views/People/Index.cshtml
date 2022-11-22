@@ -1,0 +1,50 @@
+﻿@*@model PeopleViewModel*@
+@model IEnumerable<Person>
+
+@{
+    ViewData["Title"] = "People Index";
+}
+
+<h1>People Index</h1>
+
+<h2>We Are Here!</h2>
+
+<div class="people-wrapper">
+    <a asp-controller="People" asp-action="Create" class="add-button">Add Person</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NAME</th>
+                <th>CITY</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in Model)
+            {
+                    <partial name="_ShowPeopleTablePartial" model="person" />
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    function deletePerson(id) {
+
+        $.ajax({
+            type: "DELETE",
+            url: "People/Delete?id=" + id,
+            success: function (response) {
+                var ele = document.querySelectorAll('tr');
+
+                ele.forEach(elem => {
+                    if (elem.getAttribute('data-modelid') == id) {
+                        elem.remove();
+                    }
+                })
+            }
+        })
+    }
+</script>

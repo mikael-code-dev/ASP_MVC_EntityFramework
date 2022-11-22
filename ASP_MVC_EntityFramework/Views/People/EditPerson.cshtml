@@ -1,0 +1,51 @@
+﻿@model Person
+@{
+    ViewData["Title"] = "Edit person";
+}
+
+<div class="create-person-form">
+    <h2>Update a persons info</h2>
+    <h3 class="todo">TODO: Make validation work</h3>
+
+    <form asp-controller="People" asp-action="Edit">
+
+        @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+        <div class="mb-3">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="error-message"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PhoneNumber" class="control-label"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="error-message"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="City" class="control-label"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="error-message"></span>
+        </div>
+
+        <div class="hidden-input">
+            <label asp-for="Id"></label>
+            <input asp-for="Id" />
+            <span asp-validation-for="Id" class="error-message"></span>
+        </div>
+
+        <input type="submit" value="Add Person" class="btn add-person-buttons" />
+        <input type="reset" value="Reset" class="btn add-person-buttons" />
+    </form>
+</div>
+
+<script>
+    var errorMess = document.querySelectorAll(".error-message");
+
+    errorMess.forEach((element) => {
+        if (element.innerHTML === "") {
+            element.classList.add("no-show");
+        }
+    });
+</script>
