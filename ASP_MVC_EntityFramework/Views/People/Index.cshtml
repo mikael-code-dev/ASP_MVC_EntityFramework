@@ -1,5 +1,5 @@
-﻿@*@model PeopleViewModel*@
-@model IEnumerable<Person>
+﻿@model PeopleViewModel
+@*@model IEnumerable<Person>*@
 
 @{
     ViewData["Title"] = "People Index";
@@ -17,11 +17,12 @@
                 <th>Id</th>
                 <th>NAME</th>
                 <th>CITY</th>
+                <th>COUNTRY</th>
                 <th>ACTIONS</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var person in Model)
+            @foreach (var person in Model.listOfPeople)
             {
                     <partial name="_ShowPeopleTablePartial" model="person" />
             }

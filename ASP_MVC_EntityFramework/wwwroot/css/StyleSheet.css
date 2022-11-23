@@ -14,10 +14,18 @@
     box-sizing: border-box;
 }
 
+.todo-wrapper {
+    margin: 4rem 0;
+
+}
+
 .todo {
     color: #f3abab;
-    text-shadow: 2px 1px black;
+    text-shadow: 2px 1px black, 0 -1px 0px white;
+    font-size: 2rem;
 }
+
+
 
 html {
     font-size: 62.5%;

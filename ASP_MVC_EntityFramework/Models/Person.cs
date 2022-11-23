@@ -11,20 +11,21 @@ namespace ASP_MVC_EntityFramework.Models
 
         public string PhoneNumber { get; set; }
 
-        public string City { get; set; }
+        public int CityId { get; set; }
+        public City City { get; set; }
 
-        public Person()
-        {
+        //public Person()
+        //{
 
-        }
+        //}
 
-        public Person(int id, string name, string phoneNumber, string city)
-        {
-            Id = id;
-            Name = name;
-            PhoneNumber = phoneNumber;
-            City = city;
-        }
+        //public Person(int id, string name, string phoneNumber, string city)
+        //{
+        //    Id = id;
+        //    Name = name;
+        //    PhoneNumber = phoneNumber;
+        //    City = new City(city);
+        //}
     }
 
 }

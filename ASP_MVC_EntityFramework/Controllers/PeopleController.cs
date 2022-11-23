@@ -2,26 +2,25 @@
 using ASP_MVC_EntityFramework.Models;
 using ASP_MVC_EntityFramework.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASP_MVC_EntityFramework.Controllers
 {
     public class PeopleController : Controller
     {
-        readonly ApplicationDbContext _context;
-        PeopleViewModel vm = new();
+        private readonly ApplicationDbContext _context;
+        static PeopleViewModel pvm = new();
 
         public PeopleController(ApplicationDbContext context)
         {
-
             _context = context;
         }
 
         public IActionResult Index()
         {
-            //vm.temptList = _context.People.ToList();
-            //return View(vm);
+            pvm.listOfPeople = _context.People.Include(x => x.City).Include(y => y.City.Country).ToList();
 
-            return View(_context.People.ToList());
+            return View(pvm);
         }
 
         public IActionResult Create()

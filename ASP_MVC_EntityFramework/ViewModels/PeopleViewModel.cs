@@ -2,11 +2,11 @@
 
 namespace ASP_MVC_EntityFramework.ViewModels
 {
-    public class PeopleViewModel
+    public class PeopleViewModel : PersonViewModel
     {
-        public static List<Person> listOfPeople { get; set; } = new();
+        //public static List<Person> listOfPeople { get; set; } = new();
 
-        public List<Person> temptList { get; set; } = new();
+        public List<Person> listOfPeople { get; set; } = new();
 
         public PersonViewModel PeopleCrudFunctions { get; set; } = new();
     }
