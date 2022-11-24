@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP_MVC_EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221123095604_init")]
+    [Migration("20221124095618_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,6 @@ namespace ASP_MVC_EntityFramework.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CityId");
@@ -117,6 +116,44 @@ namespace ASP_MVC_EntityFramework.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ASP_MVC_EntityFramework.Models.Language", b =>
+                {
+                    b.Property<int>("LanguageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LanguageId"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LanguageId");
+
+                    b.ToTable("Languages");
+
+                    b.HasData(
+                        new
+                        {
+                            LanguageId = 1,
+                            Name = "Swedish"
+                        },
+                        new
+                        {
+                            LanguageId = 2,
+                            Name = "English"
+                        },
+                        new
+                        {
+                            LanguageId = 3,
+                            Name = "Danish"
+                        },
+                        new
+                        {
+                            LanguageId = 4,
+                            Name = "French"
+                        });
+                });
+
             modelBuilder.Entity("ASP_MVC_EntityFramework.Models.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -128,12 +165,13 @@ namespace ASP_MVC_EntityFramework.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -147,6 +185,7 @@ namespace ASP_MVC_EntityFramework.Migrations
                         {
                             Id = 1,
                             CityId = 1,
+                            LanguageId = 0,
                             Name = "Kalle Person",
                             PhoneNumber = "555-5555"
                         },
@@ -154,6 +193,7 @@ namespace ASP_MVC_EntityFramework.Migrations
                         {
                             Id = 2,
                             CityId = 2,
+                            LanguageId = 0,
                             Name = "Jennie Antonsson",
                             PhoneNumber = "444-4444"
                         },
@@ -161,6 +201,7 @@ namespace ASP_MVC_EntityFramework.Migrations
                         {
                             Id = 3,
                             CityId = 3,
+                            LanguageId = 0,
                             Name = "Wendely Blom",
                             PhoneNumber = "222-2222"
                         },
@@ -168,6 +209,7 @@ namespace ASP_MVC_EntityFramework.Migrations
                         {
                             Id = 4,
                             CityId = 4,
+                            LanguageId = 0,
                             Name = "Belly Button",
                             PhoneNumber = "000-4444"
                         },
@@ -175,6 +217,7 @@ namespace ASP_MVC_EntityFramework.Migrations
                         {
                             Id = 5,
                             CityId = 5,
+                            LanguageId = 0,
                             Name = "Alma Starstruck",
                             PhoneNumber = "888-4444"
                         },
@@ -182,18 +225,78 @@ namespace ASP_MVC_EntityFramework.Migrations
                         {
                             Id = 6,
                             CityId = 6,
+                            LanguageId = 0,
                             Name = "Hugo Magnusson",
                             PhoneNumber = "999-9999"
                         });
                 });
 
+            modelBuilder.Entity("LanguagePerson", b =>
+                {
+                    b.Property<int>("LanguagesLanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeopleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LanguagesLanguageId", "PeopleId");
+
+                    b.HasIndex("PeopleId");
+
+                    b.ToTable("LanguagePerson");
+
+                    b.HasData(
+                        new
+                        {
+                            LanguagesLanguageId = 1,
+                            PeopleId = 1
+                        },
+                        new
+                        {
+                            LanguagesLanguageId = 2,
+                            PeopleId = 1
+                        },
+                        new
+                        {
+                            LanguagesLanguageId = 3,
+                            PeopleId = 2
+                        },
+                        new
+                        {
+                            LanguagesLanguageId = 2,
+                            PeopleId = 2
+                        },
+                        new
+                        {
+                            LanguagesLanguageId = 3,
+                            PeopleId = 3
+                        },
+                        new
+                        {
+                            LanguagesLanguageId = 4,
+                            PeopleId = 4
+                        },
+                        new
+                        {
+                            LanguagesLanguageId = 1,
+                            PeopleId = 5
+                        },
+                        new
+                        {
+                            LanguagesLanguageId = 2,
+                            PeopleId = 6
+                        });
+                });
+
             modelBuilder.Entity("ASP_MVC_EntityFramework.Models.City", b =>
                 {
-                    b.HasOne("ASP_MVC_EntityFramework.Models.Country", null)
+                    b.HasOne("ASP_MVC_EntityFramework.Models.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("ASP_MVC_EntityFramework.Models.Person", b =>
@@ -205,6 +308,21 @@ namespace ASP_MVC_EntityFramework.Migrations
                         .IsRequired();
 
                     b.Navigation("City");
+                });
+
+            modelBuilder.Entity("LanguagePerson", b =>
+                {
+                    b.HasOne("ASP_MVC_EntityFramework.Models.Language", null)
+                        .WithMany()
+                        .HasForeignKey("LanguagesLanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ASP_MVC_EntityFramework.Models.Person", null)
+                        .WithMany()
+                        .HasForeignKey("PeopleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ASP_MVC_EntityFramework.Models.City", b =>

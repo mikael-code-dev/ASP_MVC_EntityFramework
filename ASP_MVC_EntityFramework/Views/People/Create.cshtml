@@ -23,9 +23,15 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="City" class="control-label"></label>
-            <input asp-for="City" class="form-control" />
-            <span asp-validation-for="City" class="error-message"></span>
+            <label asp-for="CityId" class="control-label"></label>
+            <select asp-for="CityId" asp-items="ViewBag.CitiesList" class="form-control"></select>
+            <span asp-validation-for="CityId" class="error-message"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="LanguageId" class="control-label"></label>
+            <select asp-for="LanguageId" asp-items="ViewBag.LanguagesList" class="form-control"></select>
+            <span asp-validation-for="LanguageId" class="error-message"></span>
         </div>
 
         <input type="submit" value="Add Person" class="btn add-person-buttons" />

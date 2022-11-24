@@ -19,10 +19,22 @@ namespace ASP_MVC_EntityFramework.ViewModels
         public int CountryId { get; set; }
 
 
+
+
         [Display(Name = "City:")]
         [Required(ErrorMessage = "City is Required")]
-        public City City { get; set; }
+        public City? City { get; set; }
 
+        [Display(Name = "City:")]
+        [Required(ErrorMessage = "City is Required")]
         public int CityId { get; set; }
+
+
+
+        [Display(Name = "Language:")]
+        [Required(ErrorMessage = "Language is Required")]
+        public Language? Language { get; set; }
+
+        public int LanguageId { get; set; }
     }
 }

@@ -1,13 +1,25 @@
 ﻿@model Person
 
 
-<tr data-modelid="@Model.Id">
-    <td>@Model.Id</td>
-    <td>@Model.Name</td>
-    <td>@Model.City.Name</td>
-    <td>@Model.City.Country.Name</td>
-    <td>
-        <a asp-action="EditPerson" asp-route-id="@Model.Id" class="btn-button edit-button">EDIT</a>
-        <a onclick="deletePerson(@Model.Id)" class="btn-button delete-button">REMOVE</a>
-    </td>
-</tr>
+@if (Model != null)
+{
+    <tr data-modelid="@Model.Id">
+        <td>@Model.Id</td>
+        <td>@Model.Name</td>
+        <td>
+            <ul class="language-list">
+                @foreach (var lang in Model.Languages)
+                {
+                    <li>@lang.Name</li>
+                }
+            </ul>
+        </td>
+        <td>@Model.City.Name</td>
+        <td>@Model.City.Country.Name</td>
+        <td>
+            <a asp-action="EditPerson" asp-route-id="@Model.Id" class="btn-button edit-button">EDIT</a>
+            <a onclick="deletePerson(@Model.Id)" class="btn-button delete-button">REMOVE</a>
+        </td>
+    </tr>
+
+}

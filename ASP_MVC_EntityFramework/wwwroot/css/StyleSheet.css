@@ -317,6 +317,11 @@ header {
     display: none;
 }
 
+.language-list {
+    list-style-type: none;
+}
+
+
 
 /* *****   FOOTER   ***** */
 .footer-text {

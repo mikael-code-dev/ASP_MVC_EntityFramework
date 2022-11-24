@@ -2,6 +2,7 @@
 using ASP_MVC_EntityFramework.Models;
 using ASP_MVC_EntityFramework.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASP_MVC_EntityFramework.Controllers
@@ -18,7 +19,13 @@ namespace ASP_MVC_EntityFramework.Controllers
 
         public IActionResult Index()
         {
-            pvm.listOfPeople = _context.People.Include(x => x.City).Include(y => y.City.Country).ToList();
+            pvm.listOfPeople = _context.People
+                .Include(x => x.City)
+                .Include(y => y.City.Country)
+                .Include(z => z.Languages).ToList();
+
+            //var people = _context.People;
+            //ViewBag.CountriesList = new SelectList(people, "Name", "Id");
 
             return View(pvm);
         }
@@ -26,6 +33,12 @@ namespace ASP_MVC_EntityFramework.Controllers
         public IActionResult Create()
         {
             var pvm = new PersonViewModel();
+            var languages = _context.Languages;
+            var cities = _context.Cities;
+
+            ViewBag.CitiesList = new SelectList(cities, "CityId", "Name");
+            ViewBag.LanguagesList = new SelectList(languages, "LanguageId", "Name");
+
             return View(pvm);
         }
 
@@ -37,7 +50,12 @@ namespace ASP_MVC_EntityFramework.Controllers
             ModelState.Remove("Id");
             if (ModelState.IsValid)
             {
-                _context.People.Add(person);
+                var lang = _context.Languages.Find(person.LanguageId);
+                var personToAdd = new Person() 
+                    { Name = person.Name, PhoneNumber = person.PhoneNumber, CityId = person.CityId, City = person.City };
+                personToAdd.Languages.Add(lang);
+
+                _context.People.Add(personToAdd);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -45,7 +63,6 @@ namespace ASP_MVC_EntityFramework.Controllers
             {
                 return View(pwm);
             }
-
         }
 
         [HttpDelete]
