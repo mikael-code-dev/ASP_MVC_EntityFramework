@@ -43,17 +43,20 @@ namespace ASP_MVC_EntityFramework.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Person person)
+        public IActionResult Create(PersonViewModel person)
         {
-
             PersonViewModel pwm = new PersonViewModel();
             ModelState.Remove("Id");
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && person.CityId != 0 && person.LanguageId != 0)
             {
-                var lang = _context.Languages.Find(person.LanguageId);
-                var personToAdd = new Person() 
-                    { Name = person.Name, PhoneNumber = person.PhoneNumber, CityId = person.CityId, City = person.City };
-                personToAdd.Languages.Add(lang);
+                var personToAdd = new Person()
+                { Name = person.Name, PhoneNumber = person.PhoneNumber, CityId = person.CityId };
+
+                Language? lang = _context.Languages.Find(person.LanguageId);
+                if (lang != null)
+                {
+                    personToAdd.Languages.Add(lang);
+                }
 
                 _context.People.Add(personToAdd);
                 _context.SaveChanges();
@@ -61,7 +64,63 @@ namespace ASP_MVC_EntityFramework.Controllers
             }
             else
             {
+                if (person.CityId == 0)
+                {
+                    ViewBag.ErrorCity = "City is Required";
+                }
+
+                if (person.LanguageId == 0)
+                {
+                    ViewBag.ErrorLanguage = "Language is Required";
+                }
+
+                var languages = _context.Languages;
+                var cities = _context.Cities;
+                ViewBag.CitiesList = new SelectList(cities, "CityId", "Name");
+                ViewBag.LanguagesList = new SelectList(languages, "LanguageId", "Name");
                 return View(pwm);
+            }
+        }
+
+        public IActionResult EditPerson(string id)
+        {
+            var pvm = new PersonViewModel();
+
+
+            int numId = int.Parse(id);
+            Person person = _context.People.Find(numId);
+
+            pvm.Name = person.Name;
+            pvm.PhoneNumber = person.PhoneNumber;
+            pvm.CityId = person.CityId;
+            pvm.LanguageId = person.LanguageId;
+
+            var languages = _context.Languages;
+            var cities = _context.Cities;
+            ViewBag.CitiesList = new SelectList(cities, "CityId", "Name");
+            ViewBag.LanguagesList = new SelectList(languages, "LanguageId", "Name");
+
+            return View(pvm);
+        }
+
+        [HttpPost]
+        public IActionResult EditPerson(PersonViewModel person)
+        {
+            int numId = person.Id;
+            Person personToEdit = _context.People.Find(numId);
+
+            if (ModelState.IsValid)
+            {
+                personToEdit.Name = person.Name;
+                personToEdit.PhoneNumber = person.PhoneNumber;
+                personToEdit.CityId = person.CityId;
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(person);
             }
         }
 
@@ -79,37 +138,20 @@ namespace ASP_MVC_EntityFramework.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult EditPerson(string id)
-        {
-            int numId = int.Parse(id);
-            Person person = _context.People.Find(numId);
-
-            return View(person);
-        }
-
         [HttpPost]
-        public IActionResult Edit(Person person)
+        public IActionResult AddLanguage(int id, string lang)
         {
-            int numId = person.Id;
-            Person personToEdit = _context.People.Find(numId);
+            var language = _context.Languages.FirstOrDefault(l => l.Name == lang);
 
-            if (ModelState.IsValid)
+
+            var personToChange = _context.People.Find(id);
+            if (personToChange != null)
             {
-                personToEdit.Name = person.Name;
-                personToEdit.PhoneNumber = person.PhoneNumber;
-                personToEdit.City = person.City;
+                personToChange.Languages.Add(language);
                 _context.SaveChanges();
-
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View(person);
             }
 
-
-            return View(person);
+            return View();
         }
-
     }
 }

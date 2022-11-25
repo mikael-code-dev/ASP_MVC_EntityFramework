@@ -1,4 +1,4 @@
-﻿@model Person
+﻿@model PersonViewModel
 @{
     ViewData["Title"] = "Edit person";
 }
@@ -6,7 +6,7 @@
 <div class="create-person-form">
     <h2>Update a persons info</h2>
 
-    <form asp-controller="People" asp-action="Edit">
+    <form asp-controller="People" asp-action="EditPerson">
 
         @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
 
@@ -23,19 +23,24 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="City" class="control-label"></label>
-            <input asp-for="City" class="form-control" />
-            <span asp-validation-for="City" class="error-message"></span>
+            <label asp-for="CityId" class="control-label"></label>
+            <select asp-for="CityId" asp-items="ViewBag.CitiesList" class="form-control dropdown-margin-bottom">
+                <option disabled selected>Select City</option>
+            </select>
+            @if (ViewBag.ErrorCity != null)
+            {
+                <span class="error-message">@ViewBag.ErrorCity</span>
+            }
         </div>
 
         <div class="hidden-input">
             <label asp-for="Id"></label>
             <input asp-for="Id" />
-            <span asp-validation-for="Id" class="error-message"></span>
+            @*<span asp-validation-for="Id" class="error-message"></span>*@
         </div>
 
-        <input type="submit" value="Add Person" class="btn add-person-buttons" />
-        <input type="reset" value="Reset" class="btn add-person-buttons" />
+        <input type="submit" value="Update Person" class="btn add-person-buttons" />
+        @*<input type="reset" value="Reset" class="btn add-person-buttons" />*@
     </form>
 </div>
 

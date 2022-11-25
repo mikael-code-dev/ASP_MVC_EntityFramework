@@ -30,23 +30,3 @@
         </tbody>
     </table>
 </div>
-
-
-<script>
-    function deletePerson(id) {
-
-        $.ajax({
-            type: "DELETE",
-            url: "People/Delete?id=" + id,
-            success: function (response) {
-                var ele = document.querySelectorAll('tr');
-
-                ele.forEach(elem => {
-                    if (elem.getAttribute('data-modelid') == id) {
-                        elem.remove();
-                    }
-                })
-            }
-        })
-    }
-</script>
