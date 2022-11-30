@@ -15,14 +15,31 @@ const addLanguageButton = (id) => {
 
     var thePanel = document.getElementById(`${id}`);
     var input = thePanel.querySelector("input");
+    var fixedInput = capitalize(input.value);
 
     $.ajax({
         type: "POST",
-        url: `People/AddLanguage?id=${id}&lang=${input.value}`,
+        url: `People/AddLanguage?id=${id}&lang=${fixedInput}`,
         success: function (response) {
 
+            // Add the languate -> FrontEnd.
+            var theUl = thePanel.parentElement.parentElement.querySelector("ul");
+            var liElem = document.createElement("li");
+            liElem.appendChild(document.createTextNode(`${fixedInput}`));
+            theUl.appendChild(liElem);
+
+            // Empty input and close (toggle) the language Panel.
+            input.value = "";
+            var panel = document.getElementById(`${id}`);
+            var theButton = panel.parentElement.querySelector("input");
+            panel.classList.toggle("show-language-panel");
+            theButton.value = theButton.value === "-" ? "+" : "-";
         }
     })
+}
+
+function capitalize(input) {
+    return input.charAt(0).toUpperCase() + input.slice(1);
 }
 
 function deletePerson(id) {

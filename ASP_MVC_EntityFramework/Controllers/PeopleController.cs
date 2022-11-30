@@ -4,6 +4,7 @@ using ASP_MVC_EntityFramework.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace ASP_MVC_EntityFramework.Controllers
 {
@@ -124,6 +125,22 @@ namespace ASP_MVC_EntityFramework.Controllers
             }
         }
 
+        public IActionResult Details(int id)
+        {
+            Person? person = _context.People
+                .Include(p => p.City)
+                .Include(p => p.City.Country)
+                .Include(p => p.Languages)
+                .FirstOrDefault(p => p.Id == id);
+                                            
+            if (person != null)
+            {
+                return View(person);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpDelete]
         public IActionResult Delete(string id)
         {
@@ -147,11 +164,23 @@ namespace ASP_MVC_EntityFramework.Controllers
             var personToChange = _context.People.Find(id);
             if (personToChange != null)
             {
-                personToChange.Languages.Add(language);
-                _context.SaveChanges();
+                if(language != null)
+                {
+                    personToChange.Languages.Add(language);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    // Add new Language in DB
+                    Language newLang = new Language() { Name = lang};
+                    _context.Languages.Add(newLang);
+                    personToChange.Languages.Add(newLang);
+                    _context.SaveChanges();
+                }
             }
 
-            return View();
+            //return View();
+            return RedirectToAction("Index");
         }
     }
 }

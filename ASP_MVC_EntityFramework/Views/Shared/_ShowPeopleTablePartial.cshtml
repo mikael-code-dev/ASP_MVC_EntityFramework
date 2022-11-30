@@ -30,15 +30,9 @@
         <td>@Model.City.Name</td>
         <td>@Model.City.Country.Name</td>
         <td>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-button details-button">DETAILS</a>
             <a asp-action="EditPerson" asp-route-id="@Model.Id" class="btn-button edit-button">EDIT</a>
             <a onclick="deletePerson(@Model.Id)" class="btn-button delete-button">REMOVE</a>
         </td>
     </tr>
-
 }
-
-@*                <script>
-    function addLanguageButton(id) {
-        console.log(id);
-    }
-                </script>*@

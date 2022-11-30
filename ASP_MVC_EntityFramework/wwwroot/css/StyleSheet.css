@@ -24,8 +24,6 @@
     font-size: 2rem;
 }
 
-
-
 html {
     font-size: 62.5%;
 }
@@ -33,7 +31,6 @@ html {
 body {
     background-color: #929cb2;
 }
-
 
 /* Remove Bootstrap code */
 textarea:hover,
@@ -92,6 +89,11 @@ a.nav-link {
         top: 4rem;
     }
 
+.menu-divider {
+    width: 5rem;
+    /*background-color: red;*/
+}
+
 
 h1, h2, h3, h4, h5, h6 {
     color: #dedede;
@@ -101,20 +103,60 @@ h1, h2, h3, h4, h5, h6 {
 
 h1, h2 {
     text-align: center;
+    width: 100%;
 }
 
 h1 {
     font-size: 6rem;
     text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
 }
 
-h2 {
-    font-size: 3.6rem;
-}
+    h1.star-glance::before {
+        /*content: "we are the people!";*/
+        content: attr(data-text);
+        position: absolute;
+        /*color: #434f6b;*/
+        color: lightyellow;
+        opacity: 0;
+        text-shadow: 4px 4px 8px white, -4px -4px 8px white;
+        animation: star-glancing 10s infinite;
+    }
 
-h3 {
-    font-size: 2.6rem;
-}
+    @keyframes star-glancing {
+        0% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 0.5;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    h2 {
+        font-size: 3.6rem;
+        opacity 1;
+    }
+
+        h2.hide-on-animate {
+            animation: hide-me 8s forwards;
+        }
+
+        @keyframes hide-me {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        h3 {
+            font-size: 2.6rem;
+        }
 
 p {
     font-family: var(--font-text);
@@ -154,6 +196,7 @@ header {
 .people-wrapper {
     border-radius: 2rem;
     padding: 0.1rem;
+    margin-top: 5rem;
 }
 
     .people-wrapper table {
@@ -216,11 +259,6 @@ header {
         /*background-color: red;*/
         margin-bottom: -0.1rem; /* HACK TO MAKE THE LINES EVEN */
     }
-
-.add-language-wrapper {
-    display: flex;
-    flex-direction: column;
-}
 
 .people-wrapper .add-language-header {
     color: rgba(255 255 255 / 0.4);
@@ -285,8 +323,13 @@ header {
         border: 2px solid #a7d1b1;
     }
 
-.people-wrapper td a.edit-button:hover {
+.people-wrapper .details-button:hover {
     background-color: #79afd8;
+    color: #ffffff;
+}
+
+.people-wrapper td a.edit-button:hover {
+    background-color: #c3bb22;
     color: #ffffff;
 }
 
@@ -294,6 +337,45 @@ header {
     background-color: #e28181;
     color: #ffffff;
 }
+
+/* Details for Person */
+.person-details-wrapper {
+    margin-top: 8rem;
+}
+
+    .person-details-wrapper table {
+        background-color: #dedede22;
+        width: 60rem;
+        margin: auto;
+        box-shadow: 40px 40px 164px 44px rgba(55 55 55 / 0.5), -40px -40px 20px 0px rgba(255 255 255 / 0.1), -1px -1px 10px 0 black, inset -1px -1px 50px 10px rgba(150, 150, 93, 0.3), 8px 8px 100px 100px #dedede62, -180px 180px 1000px 1000px rgba(0 0 0 / 0.1);
+    }
+
+    .person-details-wrapper tr:hover {
+        background-color: transparent;
+    }
+
+    .person-details-wrapper .ghost-td {
+        width: 10%;
+    }
+
+    .person-details-wrapper table td {
+        text-align: left;
+    }
+
+    .person-details-wrapper table ul.language-list {
+        padding-left: 0 !important;
+    }
+
+.add-language-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.person-details-action-button {
+    text-align: right;
+}
+
+/* END DETAILS FOR PERSON */
 
 .create-person-form {
     width: 40rem;

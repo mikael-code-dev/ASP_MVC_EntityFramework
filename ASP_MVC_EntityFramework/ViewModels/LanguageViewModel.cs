@@ -7,8 +7,8 @@ namespace ASP_MVC_EntityFramework.ViewModels
     {
         public List<Language> Languages { get; set; } = new();
 
-        [Required(ErrorMessage = "Must enter any Language")]
-        [Display(Name = "Enter Language")]
+        [Required(ErrorMessage = "Must enter a Language")]
+        [Display(Name = "Enter Language:")]
         public string? Name { get; set; }
     }
 }
